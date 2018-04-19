@@ -171,7 +171,7 @@ bool Digraph::add_edge(const string & s1, const string & s2, double weight)
 		int from_n = add_vertex(s1);
 		int to_n = add_vertex(s2);
 		
-		std::cout << "new edge, from " << from_n << " to " << to_n << '\n';
+		//std::cout << "new edge, from " << from_n << " to " << to_n << '\n';
 		indegree[to_n]++;
 		E++;
 		adj[from_n].emplace_back( Edge{from_n, to_n, weight} );
@@ -223,8 +223,6 @@ vector<vector<int>> Digraph::get_adj_list() const
 	//returns internal vector<vector<Edge>> as vector<vector<int>>
 	//where int is adjacent node IDs
 	vector<vector<int>> ret;
-	
-	cout << "Get adj list: \n";
 	
 	for (auto v : adj)
 	{
