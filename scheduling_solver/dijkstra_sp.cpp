@@ -13,8 +13,7 @@ using namespace std;
 
 double dijkstra_sp(const Digraph & G, int s, int target)
 {
-	//int dijkstra(const vector< vector<edge> > &graph, int source, int target)
-	vector<vector<Edge>> graph = G.adj;
+	vector<vector<Edge>> adj = G.adj;
 	
 	vector<double> min_dist(G.get_e(), numeric_limits<double>::max() );
 	min_dist[s] = 0;
@@ -31,7 +30,7 @@ double dijkstra_sp(const Digraph & G, int s, int target)
 		
 		active_vertices.erase( active_vertices.begin() );
 		
-		for (auto e : graph[where])
+		for (auto e : adj[where])
 		{
 			if (min_dist[e.to_n] > min_dist[where] + e.weight)
 			{
@@ -45,13 +44,21 @@ double dijkstra_sp(const Digraph & G, int s, int target)
 }
 
 
-vector<double> dijkstra_sp_ret(const Digraph & G, int s, int target)
+vector<int> dijkstra_sp_ret(const Digraph & G, int s, int target)
 {
 	//int dijkstra(const vector< vector<edge> > &graph, int source, int target)
 	vector<vector<Edge>> graph = G.adj;
+	vector<pair<int, double>> min_dist;
 	
-	vector<double> min_dist(G.get_v(), numeric_limits<double>::max() );
-	min_dist[s] = 0;
+	min_dist.resize(G.get_v());
+	
+	for (auto p : min_dist)
+	{
+		p.first = -1;
+		p.second = numeric_limits<double>::max();
+	}
+	
+	min_dist[s].second = 0;
 	set<pair<int,int>> active_vertices;
 	
 	active_vertices.insert( {0,s} );
@@ -61,20 +68,31 @@ vector<double> dijkstra_sp_ret(const Digraph & G, int s, int target)
 		int where = active_vertices.begin()->second;
 		
 		if (where == target)
-			return min_dist;
-		
+		{
+			break;
+		}
+
 		active_vertices.erase( active_vertices.begin() );
 		
 		for (auto e : graph[where])
 		{
-			if (min_dist[e.to_n] > min_dist[where] + e.weight)
+			if (min_dist[e.to_n].second > min_dist[where].second + e.weight)
 			{
-				active_vertices.erase( { min_dist[e.to_n], e.to_n } );
-				min_dist[e.to_n] = min_dist[where] + e.weight;
-				active_vertices.insert( { min_dist[e.to_n], e.to_n } );
+				active_vertices.erase( { min_dist[e.to_n].second, e.to_n } );
+				min_dist[e.to_n] = std::make_pair(e.from_n, min_dist[where].second + e.weight);
+				active_vertices.insert( { min_dist[e.to_n].second, e.to_n } );
+				
+				cout << "adding vertex " << e.to_n << '\n';
 			}
 		}
 	}
-	return min_dist;
+	
+	vector<int> ret;
+	
+	for (auto p : min_dist)
+	{
+		ret.push_back(p.first);
+	}
+	
+	return ret;
 }
-

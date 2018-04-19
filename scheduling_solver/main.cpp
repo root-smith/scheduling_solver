@@ -10,6 +10,7 @@
 #include "topo.hpp"
 #include "util.hpp"
 #include "dijkstra_sp.hpp"
+#include "hamiltonian_path.hpp"
 
 using namespace std;
 using json = nlohmann::json;
@@ -57,7 +58,7 @@ int main()
 	mydfs.check();
 	
 	// test topo
-	
+	/*
 	Topological ts = Topological(d);
 	cout << "Topological sort: \n";
 	for (int i = 0; i < ts.order.size(); i++)
@@ -68,7 +69,7 @@ int main()
 	}
 	cout << '\n';
 	
-	/*
+	
 	//create all topological sorts
 	vector<vector<int>> all_tsorts = all_topological_sorts(d);
 	
@@ -92,15 +93,31 @@ int main()
 
 	*/
 	
-	double sp = dijkstra_sp(d, 0, 16);
+	double sp = dijkstra_sp(d, 1, 16);
 	
-	cout << "sp: " << sp << '\n';
-	
-	vector<double> tst = dijkstra_sp_ret(d, 0, 16);
-	
+	cout << "Dijkstra shortest path from 0 to 16:\n Cost: " << sp << '\n';
+
+	/*
+	vector<int> tst = dijkstra_sp_ret(d, 0, 16);
+
+	cout << "Shortest Path:\n";
 	for (auto i : tst)
 		cout << i << ' ';
 	cout << '\n';
+	*/
+	cout << '\n';
+	hamiltonian_path hpath = hamiltonian_path(d);
+	
+	cout << "Number of Hamiltionian Paths: " << hpath.get_count() << '\n';
+	cout << "Hamiltionian Paths: \n";
+	
+	for (auto vi : hpath.get_paths())
+	{
+		cout << "Path:\n";
+		for (auto i : vi)
+			cout << i << ' ';
+		cout << '\n';
+	}
 	
 	return 0;
 }

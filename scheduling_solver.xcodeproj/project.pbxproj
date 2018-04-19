@@ -16,6 +16,7 @@
 		8867BD5020884AE900D78C1C /* dijkstra.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8867BD4E20884AE900D78C1C /* dijkstra.cpp */; };
 		8867BD562088501700D78C1C /* edge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8867BD542088501700D78C1C /* edge.cpp */; };
 		8867BD592088620900D78C1C /* dijkstra_sp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8867BD572088620900D78C1C /* dijkstra_sp.cpp */; };
+		8867BD5C20888D8A00D78C1C /* hamiltonian_path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8867BD5A20888D8A00D78C1C /* hamiltonian_path.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -49,6 +50,8 @@
 		8867BD552088501700D78C1C /* edge.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = edge.hpp; sourceTree = "<group>"; };
 		8867BD572088620900D78C1C /* dijkstra_sp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = dijkstra_sp.cpp; sourceTree = "<group>"; };
 		8867BD582088620900D78C1C /* dijkstra_sp.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = dijkstra_sp.hpp; sourceTree = "<group>"; };
+		8867BD5A20888D8A00D78C1C /* hamiltonian_path.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = hamiltonian_path.cpp; sourceTree = "<group>"; };
+		8867BD5B20888D8A00D78C1C /* hamiltonian_path.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = hamiltonian_path.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +94,8 @@
 				8867BD4F20884AE900D78C1C /* dijkstra.hpp */,
 				8867BD572088620900D78C1C /* dijkstra_sp.cpp */,
 				8867BD582088620900D78C1C /* dijkstra_sp.hpp */,
+				8867BD5A20888D8A00D78C1C /* hamiltonian_path.cpp */,
+				8867BD5B20888D8A00D78C1C /* hamiltonian_path.hpp */,
 				8867BD4920883F7E00D78C1C /* topo.hpp */,
 				8867BD3F208818A700D78C1C /* digraph.cpp */,
 				8867BD40208818A700D78C1C /* digraph.hpp */,
@@ -163,6 +168,7 @@
 				8867BD592088620900D78C1C /* dijkstra_sp.cpp in Sources */,
 				8867BD5020884AE900D78C1C /* dijkstra.cpp in Sources */,
 				8867BD392088184F00D78C1C /* main.cpp in Sources */,
+				8867BD5C20888D8A00D78C1C /* hamiltonian_path.cpp in Sources */,
 				8867BD4A20883F7E00D78C1C /* topo.cpp in Sources */,
 				8867BD41208818A700D78C1C /* digraph.cpp in Sources */,
 				8867BD562088501700D78C1C /* edge.cpp in Sources */,
