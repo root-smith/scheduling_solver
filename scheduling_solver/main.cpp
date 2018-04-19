@@ -9,6 +9,7 @@
 #include "dfs.hpp"
 #include "topo.hpp"
 #include "util.hpp"
+#include "dijkstra_sp.hpp"
 
 using namespace std;
 using json = nlohmann::json;
@@ -67,6 +68,7 @@ int main()
 	}
 	cout << '\n';
 	
+	/*
 	//create all topological sorts
 	vector<vector<int>> all_tsorts = all_topological_sorts(d);
 	
@@ -87,6 +89,17 @@ int main()
 	{
 		print_vec_of_vec(all_tsorts);
 	}
+
+	*/
+	
+	double sp = dijkstra_sp(d, 0, 16);
+	
+	cout << "sp: " << sp << '\n';
+	
+	vector<double> tst = dijkstra_sp_ret(d, 0, 16);
+	
+	for (auto i : tst)
+		cout << i << ' ';
 	cout << '\n';
 	
 	return 0;
