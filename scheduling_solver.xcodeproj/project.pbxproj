@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8867BD392088184F00D78C1C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8867BD382088184F00D78C1C /* main.cpp */; };
 		8867BD41208818A700D78C1C /* digraph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8867BD3F208818A700D78C1C /* digraph.cpp */; };
+		8867BD4420883CF900D78C1C /* bfs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8867BD4220883CF900D78C1C /* bfs.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,6 +29,8 @@
 		8867BD382088184F00D78C1C /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		8867BD3F208818A700D78C1C /* digraph.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = digraph.cpp; sourceTree = "<group>"; };
 		8867BD40208818A700D78C1C /* digraph.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = digraph.hpp; sourceTree = "<group>"; };
+		8867BD4220883CF900D78C1C /* bfs.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = bfs.cpp; sourceTree = "<group>"; };
+		8867BD4320883CF900D78C1C /* bfs.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = bfs.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +65,8 @@
 			children = (
 				8867BD382088184F00D78C1C /* main.cpp */,
 				8867BD3F208818A700D78C1C /* digraph.cpp */,
+				8867BD4220883CF900D78C1C /* bfs.cpp */,
+				8867BD4320883CF900D78C1C /* bfs.hpp */,
 				8867BD40208818A700D78C1C /* digraph.hpp */,
 			);
 			path = scheduling_solver;
@@ -123,6 +128,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8867BD4420883CF900D78C1C /* bfs.cpp in Sources */,
 				8867BD392088184F00D78C1C /* main.cpp in Sources */,
 				8867BD41208818A700D78C1C /* digraph.cpp in Sources */,
 			);
