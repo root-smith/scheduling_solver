@@ -13,6 +13,8 @@
 		8867BD4720883D6900D78C1C /* dfs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8867BD4520883D6900D78C1C /* dfs.cpp */; };
 		8867BD4A20883F7E00D78C1C /* topo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8867BD4820883F7E00D78C1C /* topo.cpp */; };
 		8867BD4D208841C700D78C1C /* util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8867BD4B208841C700D78C1C /* util.cpp */; };
+		8867BD5020884AE900D78C1C /* dijkstra.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8867BD4E20884AE900D78C1C /* dijkstra.cpp */; };
+		8867BD562088501700D78C1C /* edge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8867BD542088501700D78C1C /* edge.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -40,6 +42,10 @@
 		8867BD4920883F7E00D78C1C /* topo.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = topo.hpp; sourceTree = "<group>"; };
 		8867BD4B208841C700D78C1C /* util.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = util.cpp; sourceTree = "<group>"; };
 		8867BD4C208841C700D78C1C /* util.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = util.hpp; sourceTree = "<group>"; };
+		8867BD4E20884AE900D78C1C /* dijkstra.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = dijkstra.cpp; sourceTree = "<group>"; };
+		8867BD4F20884AE900D78C1C /* dijkstra.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = dijkstra.hpp; sourceTree = "<group>"; };
+		8867BD542088501700D78C1C /* edge.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = edge.cpp; sourceTree = "<group>"; };
+		8867BD552088501700D78C1C /* edge.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = edge.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,9 +84,13 @@
 				8867BD4520883D6900D78C1C /* dfs.cpp */,
 				8867BD4620883D6900D78C1C /* dfs.hpp */,
 				8867BD4820883F7E00D78C1C /* topo.cpp */,
+				8867BD4E20884AE900D78C1C /* dijkstra.cpp */,
+				8867BD4F20884AE900D78C1C /* dijkstra.hpp */,
 				8867BD4920883F7E00D78C1C /* topo.hpp */,
 				8867BD3F208818A700D78C1C /* digraph.cpp */,
 				8867BD40208818A700D78C1C /* digraph.hpp */,
+				8867BD542088501700D78C1C /* edge.cpp */,
+				8867BD552088501700D78C1C /* edge.hpp */,
 				8867BD4220883CF900D78C1C /* bfs.cpp */,
 				8867BD4320883CF900D78C1C /* bfs.hpp */,
 			);
@@ -145,9 +155,11 @@
 			files = (
 				8867BD4420883CF900D78C1C /* bfs.cpp in Sources */,
 				8867BD4720883D6900D78C1C /* dfs.cpp in Sources */,
+				8867BD5020884AE900D78C1C /* dijkstra.cpp in Sources */,
 				8867BD392088184F00D78C1C /* main.cpp in Sources */,
 				8867BD4A20883F7E00D78C1C /* topo.cpp in Sources */,
 				8867BD41208818A700D78C1C /* digraph.cpp in Sources */,
+				8867BD562088501700D78C1C /* edge.cpp in Sources */,
 				8867BD4D208841C700D78C1C /* util.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

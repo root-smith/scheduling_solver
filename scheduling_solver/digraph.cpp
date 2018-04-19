@@ -247,6 +247,19 @@ vector<pair<int, int>> Digraph::get_edge_list() const
 	return edge_list;
 }
 
+vector<Edge> Digraph::get_edge_list_as_edge() const
+{
+	unordered_set<Edge> s;
+	
+	for (auto v : adj)
+		for (auto e : v)
+			s.insert(e);
+	
+	vector<Edge> ret(s.begin(), s.end());
+	
+	return ret;
+}
+
 string Digraph::edge_list_to_string() const
 {
 	auto edge_list = Digraph::get_edge_list();

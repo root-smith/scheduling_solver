@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include <iostream>
 #include "json.hpp"
+#include "edge.hpp"
 
 using json = nlohmann::json;
 
@@ -23,12 +24,7 @@ private:
 		std::string public_id;
 	};
 	
-	struct Edge
-	{
-		int from_n;
-		int to_n;
-		double weight;
-	};
+	//struct Edge;
 	
 	int get_id(const std::string & s);
 	int get_id(int i);
@@ -37,6 +33,7 @@ public:
 	Digraph();
 	Digraph(const json& j);
 	
+	
 	std::vector<std::vector<Edge>> adj;					//adjacency list for vertex v
 	std::vector<int> indegree;							//indegree[v] = indegree of vertex v
 	std::vector<Vertex> vertex_list;
@@ -44,7 +41,7 @@ public:
 	
 	int get_v() const { return V; }
 	int get_e() const { return E; }
-	double get_weight(Edge e) const { return e.weight; };
+	double get_weight(const Edge & e) const { return e.weight; };
 	double get_weight(int v, int w) const;				//returns edge weight based on two vertex IDs
 	size_t get_outdegree(int v) const;
 	size_t get_indegree(int v) const;
@@ -68,6 +65,7 @@ public:
 	
 	std::vector<std::vector<int>> get_adj_list() const;
 	std::vector<std::pair<int, int>> get_edge_list() const;
+	std::vector<Edge> get_edge_list_as_edge() const;
 	std::vector<int> get_vertex_list() const;
 	std::string edge_list_to_string() const;
 	
