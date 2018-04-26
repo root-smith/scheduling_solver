@@ -42,7 +42,7 @@ int main()
 	Digraph d(jin);
 	
 	//cout << d.describe().str();
-	
+	/*
 	//create depth first order
 	int w = 6;
 	dfs mydfs = dfs(d);
@@ -52,26 +52,31 @@ int main()
 		cout << setw(w) << v << setw(w) << mydfs.preorder[v] << setw(w) << mydfs.postorder[v] << '\n';
 	}
 	cout << '\n';
-	
+	*/
 	cout << '\n';
-	hamiltonian_path hpath = hamiltonian_path(d);
+	
+	cout << "0 -> 1 : " << d.get_weight(0,1) << '\n';
+	cout << "1 -> 2 : " << d.get_weight(1,2) << '\n';
+	
 	
 	Timer htime;
 	htime.start();
-	cout << "Number of Hamiltionian Paths: " << hpath.get_num_paths() << " found out of " << hpath.get_attempts() << '\n';
-	htime.stop();
 	
+	hamiltonian_path hpath = hamiltonian_path(d);
+	cout << "Number of Hamiltionian Paths: " << hpath.get_num_paths() << " found out of " << hpath.get_attempts() << '\n';
+	
+	htime.stop();
 	cout << "Runtime: " << htime.elapsed_ms() << " ms\n";
 	
-	cout << "Hamiltionian Paths: \n";
-	
-	for (auto vi : hpath.get_paths())
+	auto vvi = hpath.get_paths();
+	for (int i = 0; i < 4; i++)
 	{
-		cout << "Path:\n";
-		for (auto i : vi)
-			cout << i << ' ';
-		cout << '\n';
+		for (auto x : vvi[i])
+			cout << x << " -> ";
+		cout << ": " << get_path_cost(d, vvi[i]) << '\n';
 	}
+	
+	//dijkstra_sp d = dijkstra_sp(d);
 	
 	return 0;
 }

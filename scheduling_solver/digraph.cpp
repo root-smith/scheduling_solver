@@ -26,8 +26,18 @@ Digraph::Digraph(const json& j)
 	int cnt_vert = 0;
 	for (auto & vert : j["nodes"])
 	{
-		string s = vert["data"]["id"];
-		add_vertex(s);
+		if (vert["data"].find("layer") != vert["data"].end() )
+		{
+			string s = vert["data"]["id"];
+			string temp = vert["data"]["layer"];
+			int i = stoi(temp);
+			add_vertex(s, i);
+		}
+		else
+		{
+			string s = vert["data"]["id"];
+			add_vertex(s);
+		}
 		++cnt_vert;
 	}
 	cout << "Count of vertices is " << cnt_vert << '\n';
@@ -47,7 +57,7 @@ Digraph::Digraph(const json& j)
 			if ( edge["data"].find("weight") != edge["data"].end() )
 			{
 				string temp = edge["data"]["weight"];
-				double weight = stoi(temp);
+				double weight = stod(temp);
 				add_edge(from_n, to_n, weight);
 			}
 			else
@@ -65,7 +75,7 @@ double Digraph::get_weight(int v, int w) const
 {
 	auto it = find_if( begin(adj[v]), end(adj[v]),
 					  [&w](const Edge & e){ return e.target == w;} );
-	return (*it).target;
+	return (*it).weight;
 }
 
 bool Digraph::map_insert(std::string s, int i)
@@ -110,16 +120,6 @@ bool Digraph::edge_exists(int v, int w) const
 	return edge_exists(to_string(v), to_string(w));
 }
 
-size_t Digraph::get_outdegree(int v) const
-{
-	return adj[v].size();
-}
-
-size_t Digraph::get_indegree(int v) const
-{
-	return indegree[v];
-}
-
 int Digraph::get_id(const string & s)
 {
 	auto it = vertex_map.find(s);
@@ -134,7 +134,7 @@ int Digraph::get_id(int i)
 	return get_id(std::to_string(i));
 }
 
-int Digraph::add_vertex(const string & s)
+int Digraph::add_vertex(const string & s, int layer)
 {
 	//returns vertex id
 	
@@ -150,11 +150,20 @@ int Digraph::add_vertex(const string & s)
 		vertex_map.insert(std::make_pair(s, next_id));
 		vertex_list.resize(V);
 	
-		vertex_list.emplace_back( Vertex{next_id,s} );
+		vertex_list.emplace_back( Vertex{next_id, s, layer} );
 		++next_id;
 		
 		return (next_id - 1);
 	}
+}
+
+int Digraph::add_vertex(const std::string & s)
+{
+	return add_vertex(s, 0);
+}
+int Digraph::add_vertex(int i, int layer)
+{
+	return add_vertex(to_string(i), layer);
 }
 
 int Digraph::add_vertex(int i)
@@ -272,22 +281,6 @@ string Digraph::edge_list_to_string() const
 	return s;
 }
 
-bool Digraph::graph_is_valid() const
-{
-	auto edge_list = get_edge_list();
-	vector<int> v_list;
-	
-	for (auto i : edge_list)
-	{
-		v_list.push_back(i.first);
-		v_list.push_back(i.second);
-	}
-	
-	if (edge_list.size() == E && v_list.size() == adj.size() && adj.size() == V)
-		return true;
-	else
-		return false;
-}
 vector<int> Digraph::get_vertex_list() const
 {
 	//generate vertex list from edge list
@@ -309,7 +302,6 @@ stringstream Digraph::describe() const
 	auto v_list = get_vertex_list();
 	auto edge_list = get_edge_list();
 	
-	ss << "graph_is_valid: " << graph_is_valid() << '\n';
 	ss << "edge_list:\n" << edge_list_to_string() << '\n';
 	ss << "edge_list.size(): " << edge_list.size() << '\n';
 	ss << "Edges: " << get_e() << '\n';
@@ -324,7 +316,6 @@ stringstream Digraph::describe() const
 			ss << e.target << ' ';
 		ss << '\n';
 	}
-	
 	return ss;
 }
 
@@ -336,4 +327,33 @@ bool is_valid_path(const Digraph & G, const vector<int> & v)
 		if (!G.edge_exists(v[i],v[i+1]))
 			flag = false;
 	return flag;
+}
+
+void Digraph::add_complete_layer(const std::vector<std::string> & vs, int layer)
+{
+	for (const auto & s : vs)
+	{
+		add_vertex(s);
+	}
+}
+void Digraph::add_complete_layer(const std::vector<std::string> & vs)
+{
+	add_complete_layer(vs, 0);
+}
+
+bool is_valid_graph(const Digraph & G)
+{
+	auto edge_list = G.get_edge_list();
+	vector<int> v_list;
+	
+	for (auto i : edge_list)
+	{
+		v_list.push_back(i.first);
+		v_list.push_back(i.second);
+	}
+	
+	if (edge_list.size() == G.get_e() && v_list.size() == G.adj.size() && G.adj.size() == G.get_v())
+		return true;
+	else
+		return false;
 }

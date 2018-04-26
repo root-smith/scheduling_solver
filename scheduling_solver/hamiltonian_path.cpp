@@ -1,6 +1,7 @@
 #include "hamiltonian_path.hpp"
 
 #include <vector>
+#include <algorithm>
 #include "dfs.hpp"
 
 hamiltonian_path::hamiltonian_path(const Digraph & G )
@@ -41,4 +42,39 @@ void hamiltonian_path::dfs(const Digraph & G, int v, int depth, std::vector<int>
 	marked[v] = false;
 	++attempts;
 	candidate.pop_back();
+}
+
+std::stringstream print_all_paths(const hamiltonian_path & hpath)
+{
+	std::stringstream ss;
+	ss << "Hamiltionian Paths: \n";
+	for (auto vi : hpath.get_paths())
+	{
+		ss << "Path:\n";
+		for (auto i : vi)
+			ss << i << ' ';
+		ss << '\n';
+	}
+	return ss;
+}
+
+double get_path_cost(const Digraph & G, const std::vector<int> & vi)
+{
+	double ret = 0.00;
+	
+	for (auto i = 0; i < vi.size()-1; i++)
+	{
+		ret += G.get_weight(i,i+1);
+	}
+	
+	/*
+	double ret = std::accumulate(vi.begin(), vi.end(),
+								[&G](int i, int j)
+								{
+									return G.get_weight(i,j);
+								}
+						   );
+	 */
+	
+	return ret;
 }

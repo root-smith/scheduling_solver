@@ -19,46 +19,15 @@ CGraph::CGraph()
 	next_id = 0;
 }
 
-CGraph::CGraph(const json& j)
+CGraph::CGraph(std::vector<std::string> v)
 {
-	next_id = 0;
-	
-	int cnt_vert = 0;
-	for (auto & vert : j["nodes"])
-	{
-		string s = vert["data"]["id"];
+	for (auto s : v)
 		add_vertex(s);
-		++cnt_vert;
-	}
-	cout << "Count of vertices is " << cnt_vert << '\n';
-	
-	int cnt_edges = 0;
-	for (auto & edge : j["edges"])
-	{
-		if (edge["data"].find("source") != edge["data"].end()
-			&& edge["data"].find("target") != edge["data"].end() )
-		{
-			string s_source = edge["data"]["source"];
-			string s_target = edge["data"]["target"];
-			
-			int from_n = stoi(s_source);
-			int to_n = stoi(s_target);
-			
-			if ( edge["data"].find("weight") != edge["data"].end() )
-			{
-				string temp = edge["data"]["weight"];
-				double weight = stoi(temp);
-				add_edge(from_n, to_n, weight);
-			}
-			else
-			{
-				add_edge(from_n, to_n);
-			}
-			++cnt_edges;
-		}
-	}
-	cout << "Count of edges from json is " << cnt_edges << '\n';
-	cout << "Count of edges from digraph is " << get_e() << '\n';
+}
+CGraph::CGraph(std::vector<int> v)
+{
+	for (auto i : v)
+		add_vertex(i);
 }
 
 double CGraph::get_weight(int v, int w) const
@@ -144,16 +113,22 @@ int CGraph::add_vertex(const string & s)
 	}
 	else
 	{
+		int curr_id = next_id++;
 		++V;
 		adj.resize(V);
 		indegree.resize(V);
-		vertex_map.insert(std::make_pair(s, next_id));
+		vertex_map.insert(std::make_pair(s, curr_id));
 		vertex_list.resize(V);
 		
 		vertex_list.emplace_back( Vertex{next_id,s} );
 		++next_id;
 		
-		return (next_id - 1);
+		for (auto it = begin(vertex_map); it != end(vertex_map); it++)
+		{
+			add_edge(curr_id, it->second);
+			add_edge(it->second, curr_id);
+		}
+		return curr_id;
 	}
 }
 

@@ -20,7 +20,10 @@ public:
 	
 	int get_num_paths() {return num_paths; };
 	int get_attempts() {return attempts; };
-	std::vector<std::vector<int>> get_paths() {return paths; };
-	
-	
+	std::vector<std::vector<int>> get_paths() const {return paths; };
 };
+
+std::stringstream print_all_paths(const hamiltonian_path & hpath);
+
+double get_path_cost(const Digraph & G, const std::vector<int> & path);
+std::pair<double, std::vector<int>> get_min_path(const Digraph & G, const std::vector<std::vector<int>> & all_paths);
