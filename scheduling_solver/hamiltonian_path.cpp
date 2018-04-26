@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include <limits>
+#include <exception>
 #include "dfs.hpp"
 #include "digraph.hpp"
 
@@ -11,11 +12,32 @@ hamiltonian_path::hamiltonian_path(const Digraph & G ) : graph(G)
 	num_paths = 0;
 	marked.resize(G.get_v());
 	
-	//recursive dfs from every vertex
-	for (int v = 0; v < G.get_v(); v++)
+	int cnt = graph.cnt_indegree_zeroes();
+	
+	std::cout << "Number of nodes with indegree of zero: " << cnt << '\n';
+	
+	if (cnt > 1)
 	{
-		if (G.indegree[v] == 0)
-			dfs(v, 1, candidate);
+		throw std::logic_error("too many nodes with indegree 0");
+	}
+	else if (cnt == 1)
+	{
+		//recursive dfs from every vertex
+		for (int v = 0; v < G.get_v(); v++)
+		{
+			if (G.indegree[v] == 0)
+				dfs(v, 1, candidate);
+		}
+	}
+	else
+	{
+		std::vector<int> layer_zero = graph.get_layer_zero();
+		
+		for (auto i : layer_zero)
+		{
+			dfs(i, 1, candidate);
+			std::fill(marked.begin(), marked.end(), false);
+		}
 	}
 };
 

@@ -6,18 +6,14 @@
 #include <unordered_set>
 #include <typeinfo>
 #include <vector>
+#include <exception>
+#include <cstdlib>
+#include <ctime>
 
 #include "digraph.hpp"
 
 using namespace std;
 using json = nlohmann::json;
-
-Digraph::Digraph()
-{
-	V = 0;
-	E = 0;
-	next_id = 0;
-}
 
 Digraph::Digraph(const json& j)
 {
@@ -68,11 +64,132 @@ Digraph::Digraph(const json& j)
 	}
 }
 
+//Generate random digraph
+Digraph::Digraph(int layers, int nodes)
+{
+	if (layers > nodes)
+		throw std::logic_error("Cannot generate digraph with less than one node per layer");
+	
+	srand(1);
+	
+	vector<int> nodes_per_layer;
+	int remaining_nodes = nodes - layers;
+	
+	for (int i = layers-1; i > 0; i--)
+	{
+		nodes_per_layer.push_back(1 + remaining_nodes/i);
+		remaining_nodes = remaining_nodes - remaining_nodes/i;
+	}
+	
+	nodes_per_layer.push_back(1+remaining_nodes);
+	/*
+	cout << "nodes_per_layer: " << '\n';
+	for (auto x : nodes_per_layer)
+		cout << x << ' ';
+	cout << '\n';
+	 */
+	
+	//generate complete layers:
+	//for each layer
+	for (auto i = 0; i < layers; i++)
+	{
+		//cout << "Generating layer " << i << '\n';
+		if (nodes_per_layer[i] == 1)
+		{
+			add_vertex(to_string(i) + "-0", i);
+		}
+		else
+		{
+			//for each from node in layer
+			for (auto j = 0; j < nodes_per_layer[i]; j++)
+			{
+				//for each from node in layer
+				for (auto k = j + 1; k < nodes_per_layer[i]; k++ )
+				{
+					//concatenating i to node so edges have unique names
+					add_edge(to_string(i) + '-' + to_string(j), to_string(i) + '-' + to_string(k), i, std::rand() % 100 / 50.0);
+					add_edge(to_string(i) + '-' + to_string(k), to_string(i) + '-' + to_string(j), i, std::rand() % 100 / 50.0);
+				}
+			}
+		}
+	}
+	
+	if (layers > 1)
+	{
+		//add downward connections between layers
+		// if layer is 2, layer numbers are 0 or 1, add connections from 0 only
+		for (auto i = 0; i < layers - 1; i++)
+		{
+			//cout << "Adding connections, layer " << i << '\n';
+			
+			//guarantee one connection from node 0 to 0 between layers
+			add_edge(to_string(i) + "-0",
+					 to_string(i+1) + "-0",
+					 std::rand() % 100 / 50.0);
+			
+			//generate random connections between layers
+			vector<int> curr_layer;
+			vector<int> nxt_layer;
+			
+			int num_connections = min(nodes_per_layer[i], nodes_per_layer[i+1]);
+			
+			for (int c = 0; c < nodes_per_layer[i]; c++)
+				curr_layer.push_back(c);
+			for (int c = 0; c < nodes_per_layer[i+1]; c++)
+				nxt_layer.push_back(c);
+			
+			std::random_shuffle ( curr_layer.begin(), curr_layer.end() );
+			std::random_shuffle ( nxt_layer.begin(), nxt_layer.end() );
+
+			for (auto j = 0; j < num_connections; j++)
+			{
+				add_edge(to_string(i) + '-' + to_string(curr_layer[j]),
+						 to_string(i+1) + '-' + to_string(nxt_layer[j]),
+						 std::rand() % 100 / 50.0);
+			}
+		}
+	}
+}
+
+void Digraph::add_complete_layer(const std::vector<std::string> & vs, int layer)
+{
+	for (const auto & s : vs)
+	{
+		add_vertex(s);
+	}
+}
+
 double Digraph::get_weight(int v, int w) const
 {
 	auto it = find_if( begin(adj[v]), end(adj[v]),
 					  [&w](const Edge & e){ return e.target == w;} );
 	return (*it).weight;
+}
+
+double Digraph::get_weight_pub(int v, int w) const
+{
+	return get_weight(to_string(v), to_string(w));
+}
+
+double Digraph::get_weight(std::string s1, std::string s2) const
+{
+	auto it_from = vertex_map.find(s1);
+	auto it_to = vertex_map.find(s2);
+	
+	if ( it_from == vertex_map.end() || it_to == vertex_map.end())
+		return false;
+	int id_from = it_from->second;
+	int id_to = it_to->second;
+	
+	auto it = find_if( begin(adj[id_from]), end(adj[id_from]),
+					  [&id_to](const Edge & e)
+					  {
+						  return e.target == id_to;
+					  } );
+	//if not unfound, return true
+	if ( it != end(adj[id_from]) )
+		return (*it).weight;
+	return -1;
 }
 
 bool Digraph::map_insert(std::string s, int i)
@@ -145,7 +262,6 @@ int Digraph::add_vertex(const string & s, int layer)
 		adj.resize(V);
 		indegree.resize(V);
 		vertex_map.insert(std::make_pair(s, next_id));
-		vertex_list.resize(V);
 	
 		vertex_list.emplace_back( Vertex{next_id, s, layer} );
 		++next_id;
@@ -168,14 +284,14 @@ int Digraph::add_vertex(int i)
 	return add_vertex(to_string(i));
 }
 
-bool Digraph::add_edge(const string & s1, const string & s2, double weight)
+bool Digraph::add_edge(const string & s1, const string & s2, int layer, double weight)
 {
 	if (edge_exists(s1,s2))
 		return false;
 	else
 	{
-		int from_n = add_vertex(s1);
-		int to_n = add_vertex(s2);
+		int from_n = add_vertex(s1, layer);
+		int to_n = add_vertex(s2, layer);
 		
 		//std::cout << "new edge, from " << from_n << " to " << to_n << '\n';
 		indegree[to_n]++;
@@ -185,15 +301,27 @@ bool Digraph::add_edge(const string & s1, const string & s2, double weight)
 	}
 }
 
-bool Digraph::add_edge(int v, int w)
+bool Digraph::add_edge(const string & s1, const string & s2, double weight)
 {
-	return add_edge(to_string(v), to_string(w), 0.0);
+	return add_edge(s1, s2, 0, weight);
+}
+
+bool Digraph::add_edge(int v, int w, int layer, double weight)
+{
+	return add_edge(to_string(v), to_string(w), layer, weight);
 }
 
 bool Digraph::add_edge(int v, int w, double weight)
 {
 	return add_edge(to_string(v), to_string(w), weight);
 }
+
+bool Digraph::add_edge(int v, int w)
+{
+	return add_edge(to_string(v), to_string(w), 0.0);
+}
+
+
 
 json Digraph::to_json() const
 {
@@ -299,7 +427,7 @@ stringstream Digraph::describe() const
 	auto v_list = get_vertex_list();
 	auto edge_list = get_edge_list();
 	
-	ss << "edge_list:\n" << edge_list_to_string() << '\n';
+	//ss << "edge_list:\n" << edge_list_to_string() << '\n';
 	ss << "edge_list.size(): " << edge_list.size() << '\n';
 	ss << "Edges: " << get_e() << '\n';
 	ss << "Vertices: " << get_v() << '\n';
@@ -326,17 +454,7 @@ bool is_valid_path(const Digraph & G, const vector<int> & v)
 	return flag;
 }
 
-void Digraph::add_complete_layer(const std::vector<std::string> & vs, int layer)
-{
-	for (const auto & s : vs)
-	{
-		add_vertex(s);
-	}
-}
-void Digraph::add_complete_layer(const std::vector<std::string> & vs)
-{
-	add_complete_layer(vs, 0);
-}
+
 
 bool is_valid_graph(const Digraph & G)
 {
@@ -363,6 +481,34 @@ double get_path_cost(const Digraph & G, const std::vector<int> & vi)
 	{
 		double d = G.get_weight(vi[i], vi[i+1]);
 		ret += d;
+	}
+	return ret;
+}
+
+int Digraph::cnt_indegree_zeroes() const
+{
+	int cnt = 0;
+	for (auto i : indegree)
+	{
+		if (i == 0)
+			++cnt;
+	}
+	
+	return cnt;
+}
+
+vector<int> Digraph::get_layer_zero() const
+{
+	vector<int> ret;
+	
+				//std::vector<Vertex>
+	for (auto v : vertex_list)
+	{
+		//cout << "Vertex ID: " << v.UID << " pubic ID: " << v.public_id << " layer: " << v.layer << '\n';
+		if (v.layer == 0)
+		{
+			ret.push_back(v.UID);
+		}
 	}
 	return ret;
 }

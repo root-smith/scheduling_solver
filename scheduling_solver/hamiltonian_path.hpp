@@ -22,6 +22,7 @@ private:
 	
 public:
 	hamiltonian_path(const Digraph & G);
+	hamiltonian_path(const Digraph & G, int layer);
 	
 	void run_shortest_path();
 	
