@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include <unordered_set>
+#include <limits>
 
 #include "digraph.hpp"
 #include "json.hpp"
@@ -41,24 +42,6 @@ int main()
 	//create digraph object from json
 	Digraph d(jin);
 	
-	//cout << d.describe().str();
-	/*
-	//create depth first order
-	int w = 6;
-	dfs mydfs = dfs(d);
-	cout << setw(w) << 'v' << setw(w) << "pre" << setw(w) << "post" << '\n';
-	cout << "--------------------\n";
-	for (int v = 0; v < d.get_v(); v++) {
-		cout << setw(w) << v << setw(w) << mydfs.preorder[v] << setw(w) << mydfs.postorder[v] << '\n';
-	}
-	cout << '\n';
-	*/
-	cout << '\n';
-	
-	cout << "0 -> 1 : " << d.get_weight(0,1) << '\n';
-	cout << "1 -> 2 : " << d.get_weight(1,2) << '\n';
-	
-	
 	Timer htime;
 	htime.start();
 	
@@ -66,17 +49,19 @@ int main()
 	cout << "Number of Hamiltionian Paths: " << hpath.get_num_paths() << " found out of " << hpath.get_attempts() << '\n';
 	
 	htime.stop();
-	cout << "Runtime: " << htime.elapsed_ms() << " ms\n";
+	cout << "Runtime, find all Hamiltionian Paths: " << htime.elapsed_ms() << " ms\n";
 	
-	auto vvi = hpath.get_paths();
-	for (int i = 0; i < 4; i++)
-	{
-		for (auto x : vvi[i])
-			cout << x << " -> ";
-		cout << ": " << get_path_cost(d, vvi[i]) << '\n';
-	}
 	
-	//dijkstra_sp d = dijkstra_sp(d);
+	htime.start();
+	hpath.run_shortest_path();
+	htime.stop();
+	cout << "Runtime, find shortest: " << htime.elapsed_ms() << " ms\n";
+
+	cout << "Min path: " << '\n';
+	for (auto i : hpath.get_shortest_path())
+		cout << i << ' ';
+
+	cout << '\n' << "Cost: " << hpath.get_sp_cost() << '\n';
 	
 	return 0;
 }

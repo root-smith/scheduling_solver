@@ -50,7 +50,7 @@ public:
 	//returns edge weight based on two vertex IDs
 	double get_weight(int v, int w) const;
 	
-	/* */
+	/* adders. there is probably a real term for this */
 	bool map_insert(std::string, int);
 	bool add_edge(int v, int w);
 	bool add_edge(int v, int w, double weight);
@@ -65,7 +65,7 @@ public:
 	void add_complete_layer(const std::vector<std::string> & vs, int layer);
 	void add_complete_layer(const std::vector<std::string> & vs);
 	
-	/* */
+	/* predicates */
 	bool edge_exists(int v, int w) const;
 	bool edge_exists(const std::string & s1, const std::string & s2) const;
 	
@@ -79,9 +79,9 @@ public:
 	std::vector<Edge> get_edge_list_as_edge() const;
 	std::vector<int> get_vertex_list() const;
 	std::string edge_list_to_string() const;
-	std::stringstream describe() const;
-
+	std::stringstream describe() const; //make non-member
 };
 
 bool is_valid_path(const Digraph & G, const std::vector<int> & v);
 bool is_valid_graph(const Digraph & G);
+double get_path_cost(const Digraph & G, const std::vector<int> & vi);

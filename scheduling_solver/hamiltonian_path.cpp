@@ -2,9 +2,11 @@
 
 #include <vector>
 #include <algorithm>
+#include <limits>
 #include "dfs.hpp"
+#include "digraph.hpp"
 
-hamiltonian_path::hamiltonian_path(const Digraph & G )
+hamiltonian_path::hamiltonian_path(const Digraph & G ) : graph(G)
 {
 	num_paths = 0;
 	marked.resize(G.get_v());
@@ -13,36 +15,57 @@ hamiltonian_path::hamiltonian_path(const Digraph & G )
 	for (int v = 0; v < G.get_v(); v++)
 	{
 		if (G.indegree[v] == 0)
-			dfs(G, v, 1, candidate);
+			dfs(v, 1, candidate);
 	}
 };
 
-void hamiltonian_path::dfs(const Digraph & G, int v, int depth, std::vector<int> candidate)
+void hamiltonian_path::dfs(int v, int depth, std::vector<int> candidate)
 {
 	//depth = depth of recursion
 	
 	marked[v] = true;
 	candidate.push_back(v);
 	
-	if (depth == G.get_v())
+	if (depth == graph.get_v())
 	{
 		++num_paths;
 		paths.push_back(candidate);
 	}
 	
 	//for every vertex adjacent to v
-	for (auto e : G.adj[v] )
+	for (auto e : graph.adj[v] )
 	{
 		if (!marked[e.target])
 		{
 			//std::cout << "searching vertex " << e.target << " at depth " << (depth+1) << '\n';
-			dfs(G, e.target, depth+1, candidate); 	//backtrack if w is already part of path
+			dfs(e.target, depth+1, candidate); 	//backtrack if w is already part of path
 		}
 	}
 	marked[v] = false;
 	++attempts;
-	candidate.pop_back();
+	candidate.clear();
 }
+
+void hamiltonian_path::run_shortest_path()
+{
+	double min_cost = std::numeric_limits<double>::max();
+	std::vector<int> min_path;
+	
+	//std::vector<std::vector<int>> paths;
+	for (auto p : paths)
+	{
+		double curr = get_path_cost(graph, p);
+		if ( curr <= min_cost)
+		{
+			min_cost = curr;
+			min_path = p;
+		}
+	}
+	shortest_path = min_path;
+	sp_cost = min_cost;
+}
+
+/* Non-member Functions */
 
 std::stringstream print_all_paths(const hamiltonian_path & hpath)
 {
@@ -58,23 +81,6 @@ std::stringstream print_all_paths(const hamiltonian_path & hpath)
 	return ss;
 }
 
-double get_path_cost(const Digraph & G, const std::vector<int> & vi)
-{
-	double ret = 0.00;
-	
-	for (auto i = 0; i < vi.size()-1; i++)
-	{
-		ret += G.get_weight(i,i+1);
-	}
-	
-	/*
-	double ret = std::accumulate(vi.begin(), vi.end(),
-								[&G](int i, int j)
-								{
-									return G.get_weight(i,j);
-								}
-						   );
-	 */
-	
-	return ret;
-}
+
+
+

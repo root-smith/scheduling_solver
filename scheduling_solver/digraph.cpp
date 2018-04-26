@@ -40,7 +40,6 @@ Digraph::Digraph(const json& j)
 		}
 		++cnt_vert;
 	}
-	cout << "Count of vertices is " << cnt_vert << '\n';
 	
 	int cnt_edges = 0;
 	for (auto & edge : j["edges"])
@@ -67,8 +66,6 @@ Digraph::Digraph(const json& j)
 			++cnt_edges;
 		}
 	}
-	cout << "Count of edges from json is " << cnt_edges << '\n';
-	cout << "Count of edges from digraph is " << get_e() << '\n';
 }
 
 double Digraph::get_weight(int v, int w) const
@@ -356,4 +353,16 @@ bool is_valid_graph(const Digraph & G)
 		return true;
 	else
 		return false;
+}
+
+double get_path_cost(const Digraph & G, const std::vector<int> & vi)
+{
+	double ret = 0.00;
+	
+	for (auto i = 0; i < vi.size()-1; i++)
+	{
+		double d = G.get_weight(vi[i], vi[i+1]);
+		ret += d;
+	}
+	return ret;
 }
