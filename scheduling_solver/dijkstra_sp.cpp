@@ -32,11 +32,11 @@ double dijkstra_sp(const Digraph & G, int s, int target)
 		
 		for (auto e : adj[where])
 		{
-			if (min_dist[e.to_n] > min_dist[where] + e.weight)
+			if (min_dist[e.target] > min_dist[where] + e.weight)
 			{
-				active_vertices.erase( { min_dist[e.to_n], e.to_n } );
-				min_dist[e.to_n] = min_dist[where] + e.weight;
-				active_vertices.insert( { min_dist[e.to_n], e.to_n } );
+				active_vertices.erase( { min_dist[e.target], e.target } );
+				min_dist[e.target] = min_dist[where] + e.weight;
+				active_vertices.insert( { min_dist[e.target], e.target } );
 			}
 		}
 	}
@@ -76,13 +76,13 @@ vector<int> dijkstra_sp_ret(const Digraph & G, int s, int target)
 		
 		for (auto e : graph[where])
 		{
-			if (min_dist[e.to_n].second > min_dist[where].second + e.weight)
+			if (min_dist[e.target].second > min_dist[where].second + e.weight)
 			{
-				active_vertices.erase( { min_dist[e.to_n].second, e.to_n } );
-				min_dist[e.to_n] = std::make_pair(e.from_n, min_dist[where].second + e.weight);
-				active_vertices.insert( { min_dist[e.to_n].second, e.to_n } );
+				active_vertices.erase( { min_dist[e.target].second, e.target } );
+				min_dist[e.target] = std::make_pair(e.source, min_dist[where].second + e.weight);
+				active_vertices.insert( { min_dist[e.target].second, e.target } );
 				
-				cout << "adding vertex " << e.to_n << '\n';
+				cout << "adding vertex " << e.target << '\n';
 			}
 		}
 	}

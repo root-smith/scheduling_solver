@@ -7,19 +7,19 @@
 #include <typeinfo>
 #include <vector>
 
-#include "digraph.hpp"
+#include "cgraph.hpp"
 
 using namespace std;
 using json = nlohmann::json;
 
-Digraph::Digraph()
+CGraph::CGraph()
 {
 	V = 0;
 	E = 0;
 	next_id = 0;
 }
 
-Digraph::Digraph(const json& j)
+CGraph::CGraph(const json& j)
 {
 	next_id = 0;
 	
@@ -61,32 +61,32 @@ Digraph::Digraph(const json& j)
 	cout << "Count of edges from digraph is " << get_e() << '\n';
 }
 
-double Digraph::get_weight(int v, int w) const
+double CGraph::get_weight(int v, int w) const
 {
 	auto it = find_if( begin(adj[v]), end(adj[v]),
 					  [&w](const Edge & e){ return e.target == w;} );
 	return (*it).target;
 }
 
-bool Digraph::map_insert(std::string s, int i)
+bool CGraph::map_insert(std::string s, int i)
 {
 	auto res = vertex_map.insert( std::make_pair(s, i) );
 	return res.second;
 }
 
-bool Digraph::vertex_exists(string s) const
+bool CGraph::vertex_exists(string s) const
 {
 	auto it = vertex_map.find(s);
 	
 	return (it != vertex_map.end());
 }
 
-bool Digraph::vertex_exists(int i) const
+bool CGraph::vertex_exists(int i) const
 {
 	return vertex_exists(std::to_string(i));
 }
 
-bool Digraph::edge_exists(const string & s1, const string & s2) const
+bool CGraph::edge_exists(const string & s1, const string & s2) const
 {
 	auto it_from = vertex_map.find(s1);
 	auto it_to = vertex_map.find(s2);
@@ -105,22 +105,22 @@ bool Digraph::edge_exists(const string & s1, const string & s2) const
 	return ( it != end(adj[id_from]) );
 }
 
-bool Digraph::edge_exists(int v, int w) const
+bool CGraph::edge_exists(int v, int w) const
 {
 	return edge_exists(to_string(v), to_string(w));
 }
 
-size_t Digraph::get_outdegree(int v) const
+size_t CGraph::get_outdegree(int v) const
 {
 	return adj[v].size();
 }
 
-size_t Digraph::get_indegree(int v) const
+size_t CGraph::get_indegree(int v) const
 {
 	return indegree[v];
 }
 
-int Digraph::get_id(const string & s)
+int CGraph::get_id(const string & s)
 {
 	auto it = vertex_map.find(s);
 	if (it != vertex_map.end())
@@ -129,12 +129,12 @@ int Digraph::get_id(const string & s)
 		return -1;
 }
 
-int Digraph::get_id(int i)
+int CGraph::get_id(int i)
 {
 	return get_id(std::to_string(i));
 }
 
-int Digraph::add_vertex(const string & s)
+int CGraph::add_vertex(const string & s)
 {
 	//returns vertex id
 	
@@ -149,7 +149,7 @@ int Digraph::add_vertex(const string & s)
 		indegree.resize(V);
 		vertex_map.insert(std::make_pair(s, next_id));
 		vertex_list.resize(V);
-	
+		
 		vertex_list.emplace_back( Vertex{next_id,s} );
 		++next_id;
 		
@@ -157,12 +157,12 @@ int Digraph::add_vertex(const string & s)
 	}
 }
 
-int Digraph::add_vertex(int i)
+int CGraph::add_vertex(int i)
 {
 	return add_vertex(to_string(i));
 }
 
-bool Digraph::add_edge(const string & s1, const string & s2, double weight)
+bool CGraph::add_edge(const string & s1, const string & s2, double weight)
 {
 	if (edge_exists(s1,s2))
 		return false;
@@ -179,22 +179,22 @@ bool Digraph::add_edge(const string & s1, const string & s2, double weight)
 	}
 }
 
-bool Digraph::add_edge(int v, int w)
+bool CGraph::add_edge(int v, int w)
 {
 	return add_edge(to_string(v), to_string(w), 0.0);
 }
 
-bool Digraph::add_edge(int v, int w, double weight)
+bool CGraph::add_edge(int v, int w, double weight)
 {
 	return add_edge(to_string(v), to_string(w), weight);
 }
 
-json Digraph::to_json() const
+json CGraph::to_json() const
 {
 	
 	int cnt_edge = 0;
 	//const <vector<vector<int>> edge_list = get_adj_list();
-	const auto edge_list = Digraph::get_edge_list();
+	const auto edge_list = CGraph::get_edge_list();
 	map<string, pair<int, int>> m;
 	
 	for (auto i : edge_list)
@@ -218,7 +218,7 @@ json Digraph::to_json() const
 	return j;
 }
 
-vector<vector<int>> Digraph::get_adj_list() const
+vector<vector<int>> CGraph::get_adj_list() const
 {
 	//returns internal vector<vector<Edge>> as vector<vector<int>>
 	//where int is adjacent node IDs
@@ -234,7 +234,7 @@ vector<vector<int>> Digraph::get_adj_list() const
 	return ret;
 }
 
-vector<pair<int, int>> Digraph::get_edge_list() const
+vector<pair<int, int>> CGraph::get_edge_list() const
 {
 	
 	vector<pair<int, int>> edge_list;
@@ -247,7 +247,7 @@ vector<pair<int, int>> Digraph::get_edge_list() const
 	return edge_list;
 }
 
-vector<Edge> Digraph::get_edge_list_as_edge() const
+vector<Edge> CGraph::get_edge_list_as_edge() const
 {
 	unordered_set<Edge> s;
 	
@@ -260,9 +260,9 @@ vector<Edge> Digraph::get_edge_list_as_edge() const
 	return ret;
 }
 
-string Digraph::edge_list_to_string() const
+string CGraph::edge_list_to_string() const
 {
-	auto edge_list = Digraph::get_edge_list();
+	auto edge_list = CGraph::get_edge_list();
 	string s;
 	
 	for (auto vertex: edge_list)
@@ -272,7 +272,7 @@ string Digraph::edge_list_to_string() const
 	return s;
 }
 
-bool Digraph::graph_is_valid() const
+bool CGraph::graph_is_valid() const
 {
 	auto edge_list = get_edge_list();
 	vector<int> v_list;
@@ -288,7 +288,7 @@ bool Digraph::graph_is_valid() const
 	else
 		return false;
 }
-vector<int> Digraph::get_vertex_list() const
+vector<int> CGraph::get_vertex_list() const
 {
 	//generate vertex list from edge list
 	auto edge_list = get_edge_list();
@@ -302,7 +302,7 @@ vector<int> Digraph::get_vertex_list() const
 	return v_list;
 }
 
-stringstream Digraph::describe() const
+stringstream CGraph::describe() const
 {
 	stringstream ss;
 	
@@ -328,7 +328,7 @@ stringstream Digraph::describe() const
 	return ss;
 }
 
-bool is_valid_path(const Digraph & G, const vector<int> & v)
+bool is_valid_path(const CGraph & G, const vector<int> & v)
 {
 	bool flag = true;
 	

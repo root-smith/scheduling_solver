@@ -5,34 +5,40 @@
 
 hamiltonian_path::hamiltonian_path(const Digraph & G )
 {
-	count = 0;
+	num_paths = 0;
 	marked.resize(G.get_v());
-	candidate.resize(G.get_v());
 	
 	//recursive dfs from every vertex
 	for (int v = 0; v < G.get_v(); v++)
-		dfs(G, v, 1);
+	{
+		if (G.indegree[v] == 0)
+			dfs(G, v, 1, candidate);
+	}
 };
 
-void hamiltonian_path::dfs(const Digraph & G, int v, int depth) //depth  = depth of recursion
+void hamiltonian_path::dfs(const Digraph & G, int v, int depth, std::vector<int> candidate)
 {
-	//std::vector<std::vector<int>> paths;
+	//depth = depth of recursion
 	
 	marked[v] = true;
 	candidate.push_back(v);
 	
 	if (depth == G.get_v())
 	{
-		++count;	//found a path
+		++num_paths;
 		paths.push_back(candidate);
 	}
 	
 	//for every vertex adjacent to v
 	for (auto e : G.adj[v] )
 	{
-		if (!marked[e.to_n])
-			dfs(G, e.to_n, depth+1); 	//backtrack if w is already part of path
+		if (!marked[e.target])
+		{
+			//std::cout << "searching vertex " << e.target << " at depth " << (depth+1) << '\n';
+			dfs(G, e.target, depth+1, candidate); 	//backtrack if w is already part of path
+		}
 	}
 	marked[v] = false;
-	candidate.clear();
+	++attempts;
+	candidate.pop_back();
 }

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		880F4DB020914F8C006D71AD /* cgraph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 880F4DAE20914F8C006D71AD /* cgraph.cpp */; };
+		880F4DB3209152DA006D71AD /* timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 880F4DB1209152DA006D71AD /* timer.cpp */; };
 		8867BD392088184F00D78C1C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8867BD382088184F00D78C1C /* main.cpp */; };
 		8867BD41208818A700D78C1C /* digraph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8867BD3F208818A700D78C1C /* digraph.cpp */; };
 		8867BD4420883CF900D78C1C /* bfs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8867BD4220883CF900D78C1C /* bfs.cpp */; };
@@ -32,6 +34,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		880F4DAE20914F8C006D71AD /* cgraph.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = cgraph.cpp; sourceTree = "<group>"; };
+		880F4DAF20914F8C006D71AD /* cgraph.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = cgraph.hpp; sourceTree = "<group>"; };
+		880F4DB1209152DA006D71AD /* timer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = timer.cpp; sourceTree = "<group>"; };
+		880F4DB2209152DA006D71AD /* timer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = timer.hpp; sourceTree = "<group>"; };
 		8867BD352088184F00D78C1C /* scheduling_solver */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = scheduling_solver; sourceTree = BUILT_PRODUCTS_DIR; };
 		8867BD382088184F00D78C1C /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		8867BD3F208818A700D78C1C /* digraph.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = digraph.cpp; sourceTree = "<group>"; };
@@ -97,8 +103,12 @@
 				8867BD5A20888D8A00D78C1C /* hamiltonian_path.cpp */,
 				8867BD5B20888D8A00D78C1C /* hamiltonian_path.hpp */,
 				8867BD4920883F7E00D78C1C /* topo.hpp */,
+				880F4DB1209152DA006D71AD /* timer.cpp */,
+				880F4DB2209152DA006D71AD /* timer.hpp */,
 				8867BD3F208818A700D78C1C /* digraph.cpp */,
 				8867BD40208818A700D78C1C /* digraph.hpp */,
+				880F4DAE20914F8C006D71AD /* cgraph.cpp */,
+				880F4DAF20914F8C006D71AD /* cgraph.hpp */,
 				8867BD542088501700D78C1C /* edge.cpp */,
 				8867BD552088501700D78C1C /* edge.hpp */,
 				8867BD4220883CF900D78C1C /* bfs.cpp */,
@@ -173,6 +183,8 @@
 				8867BD41208818A700D78C1C /* digraph.cpp in Sources */,
 				8867BD562088501700D78C1C /* edge.cpp in Sources */,
 				8867BD4D208841C700D78C1C /* util.cpp in Sources */,
+				880F4DB020914F8C006D71AD /* cgraph.cpp in Sources */,
+				880F4DB3209152DA006D71AD /* timer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
