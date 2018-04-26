@@ -14,8 +14,7 @@ dfs::dfs(const Digraph & G)
 	for (int v = 0; v < G.get_v(); v++)
 		if (!marked[v]) run_dfs(G, v);
 	
-	reverse_postorder.resize(postorder.size());
-	std::reverse_copy(postorder.begin(), postorder.end(), reverse_postorder.begin());
+	std::reverse_copy(postorder.begin(), postorder.end(), back_inserter(reverse_postorder));
 }
 
 void dfs::run_dfs(const Digraph & G, int v)

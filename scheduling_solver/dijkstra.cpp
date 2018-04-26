@@ -1,17 +1,33 @@
+#if 0
+
 #include <vector>
 #include <limits>
 
 #include "dijkstra.hpp"
 
-
 using namespace std;
+
 
 Dijkstra::Dijkstra(const Digraph & G, int s)
 {
-	dist_to.resize(G.get_v());
-	//edge_to.resize(G.get_v());
-	
 	vector<Edge> edge_to = G.get_edge_list_as_edge();
+	
+	dist_to.resize(G.get_v());
+	std::fill (dist_to.begin(),dist_to.end(), std::numeric_limits<double>::max());
+	
+	dist_to[s] = 0.0;
+	
+	pq.push(wt{s, dist_to[s]});
+	
+	
+	/*
+	pq = new IndexMinPQ<Double>(G.V());
+	pq.insert(s, distTo[s]);
+	while (!pq.isEmpty()) {
+		int v = pq.delMin();
+		for (DirectedEdge e : G.adj(v))
+			relax(e);
+	 */
 	
 	/*
 	for (DirectedEdge e : G.edges()) {
@@ -67,4 +83,4 @@ Dijkstra::Dijkstra(const Digraph & G, int s)
 	
  };
  
-
+#endif

@@ -9,6 +9,9 @@
 #include "dfs.hpp"
 #include "topo.hpp"
 #include "util.hpp"
+#include "dijkstra_sp.hpp"
+#include "hamiltonian_path.hpp"
+#include "timer.hpp"
 
 using namespace std;
 using json = nlohmann::json;
@@ -50,44 +53,25 @@ int main()
 	}
 	cout << '\n';
 	
-	cout << "E: " << d.get_e() << "; V: " << d.get_v() << '\n';
 	cout << '\n';
+	hamiltonian_path hpath = hamiltonian_path(d);
 	
-	mydfs.check();
+	Timer htime;
+	htime.start();
+	cout << "Number of Hamiltionian Paths: " << hpath.get_num_paths() << " found out of " << hpath.get_attempts() << '\n';
+	htime.stop();
 	
-	// test topo
+	cout << "Runtime: " << htime.elapsed_ms() << " ms\n";
 	
-	Topological ts = Topological(d);
-	cout << "Topological sort: \n";
-	for (int i = 0; i < ts.order.size(); i++)
+	cout << "Hamiltionian Paths: \n";
+	
+	for (auto vi : hpath.get_paths())
 	{
-		if (i != 0)
-			cout << " => ";
-		cout << ts.order[i];
+		cout << "Path:\n";
+		for (auto i : vi)
+			cout << i << ' ';
+		cout << '\n';
 	}
-	cout << '\n';
-	
-	//create all topological sorts
-	vector<vector<int>> all_tsorts = all_topological_sorts(d);
-	
-	cout << '\n';
-	cout << all_tsorts.size() << " unique topological sorts generated.\n";
-	
-	if (all_tsorts.size() > 10)
-	{
-		cout << "Listing first 10 topological sorts: \n";
-		for (auto i : Range<0, 10>())
-		{
-			for (auto j : all_tsorts[i])
-				cout << j << ' ';
-			cout << '\n';
-		}
-	}
-	else
-	{
-		print_vec_of_vec(all_tsorts);
-	}
-	cout << '\n';
 	
 	return 0;
 }

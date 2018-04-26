@@ -2,13 +2,13 @@
 
 struct Edge
 {
-	int from_n;
-	int to_n;
+	int source;
+	int target;
 	double weight;
 
 	bool operator==(const Edge & other ) const
 	{
-		return (from_n == other.from_n && to_n == other.to_n);
+		return (source == other.source && target == other.target);
 	}
 	
 };
@@ -19,7 +19,11 @@ namespace std {
 	{
 		size_t operator()(const Edge & e) const
 		{
-			return ((hash<int>()(e.from_n+80000) ^ (hash<int>()(e.to_n) << 1)) >> 1);
+			return ((hash<int>()(e.source) ^ (hash<int>()(e.target) << 1)) >> 1);
 		}
 	};
 }
+
+/*
+ set[n][n] adjacency matrix
+ */

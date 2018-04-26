@@ -85,24 +85,16 @@ vector<vector<int>> all_topological_sorts(const Digraph & G)
 	// Mark all the vertices as not visited
 	vector<bool> visited;
 	visited.resize(G.get_v());
-	cout << "G.get_V() is " << G.get_v() << '\n';
 	
 	for (auto i : visited)
 		visited[i] = false;
 	
 	vector<int> indegree = G.indegree;
-	for (auto i : indegree)
-		cout << i << ' ';
-	cout << '\n';
 	
 	//adj is a copy of G.adj with weights removed
 	vector<vector<int>> adj;
 	adj.resize(G.adj.size());
-	/*
-	 for (size_t i = 0; i < G.adj.size(); i++ )
-	 for (size_t j = 0; j < G.adj[i].size(); j++)
-	 adj[i].push_back(G.adj[i][j].to_n);
-	 */
+
 	adj = G.get_adj_list();
 	
 	/*
@@ -126,80 +118,3 @@ vector<vector<int>> all_topological_sorts(const Digraph & G)
 	
 	return ret;
 }
-
-
-/*
- 
- All topological sorts:
- For each vertex, make temp indegree vector
- Find all vertices where indegree is 0. "Top"
- For each Top
- If not visited
- Reduce indegree of adjacent vertices
- add vertex to res
- mark visited true
- alltopologicalSortUtil(res, visited);
- 
- 
- //  Main recursive function to print all possible
- //  topological sorts
- void Graph::alltopologicalSortUtil(vector<int>& res,
- bool visited[])
- {
- // To indicate whether all topological are found
- // or not
- bool flag = false;
- 
- for (int i = 0; i < V; i++)
- {
- //  If indegree is 0 and not yet visited then
- //  only choose that vertex
- if (indegree[i] == 0 && !visited[i])
- {
- //  reducing indegree of adjacent vertices
- list<int>:: iterator j;
- for (j = adj[i].begin(); j != adj[i].end(); j++)
- indegree[*j]--;
- 
- //  including in result
- res.push_back(i);
- visited[i] = true;
- alltopologicalSortUtil(res, visited);
- 
- // resetting visited, res and indegree for
- // backtracking
- visited[i] = false;
- res.erase(res.end() - 1);
- for (j = adj[i].begin(); j != adj[i].end(); j++)
- indegree[*j]++;
- 
- flag = true;
- }
- }
- 
- //  We reach here if all vertices are visited.
- //  So we print the solution here
- if (!flag)
- {
- for (int i = 0; i < res.size(); i++)
- cout << res[i] << " ";
- cout << endl;
- }
- }
- 
- ////
- 
- //  The function does all Topological Sort.
- //  It uses recursive alltopologicalSortUtil()
- void Graph::alltopologicalSort()
- {
- // Mark all the vertices as not visited
- bool *visited = new bool[V];
- for (int i = 0; i < V; i++)
- visited[i] = false;
- 
- vector<int> res;
- alltopologicalSortUtil(res, visited);
- }
- */
-
