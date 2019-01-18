@@ -10,12 +10,11 @@ struct Edge
 	{
 		return (source == other.source && target == other.target);
 	}
-	
 };
 
 namespace std {
 	template<>
-	struct std::hash<Edge>
+	struct hash<Edge>
 	{
 		size_t operator()(const Edge & e) const
 		{

@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include <unordered_set>
+#include <limits>
 
 #include "digraph.hpp"
 #include "json.hpp"
@@ -37,41 +38,52 @@ int main()
 	
 	replace( jin.begin(), jin.end(), '[', '{' );
 	replace( jin.begin(), jin.end(), ']', '}' );
-	
-	//create digraph object from json
+
 	Digraph d(jin);
 	
-	//cout << d.describe().str();
-	
-	//create depth first order
-	int w = 6;
-	dfs mydfs = dfs(d);
-	cout << setw(w) << 'v' << setw(w) << "pre" << setw(w) << "post" << '\n';
-	cout << "--------------------\n";
-	for (int v = 0; v < d.get_v(); v++) {
-		cout << setw(w) << v << setw(w) << mydfs.preorder[v] << setw(w) << mydfs.postorder[v] << '\n';
-	}
-	cout << '\n';
-	
-	cout << '\n';
-	hamiltonian_path hpath = hamiltonian_path(d);
-	
 	Timer htime;
+	
 	htime.start();
-	cout << "Number of Hamiltionian Paths: " << hpath.get_num_paths() << " found out of " << hpath.get_attempts() << '\n';
+	int nodes = 20;
+	int layers = 5;
+	Digraph rd(layers, nodes);
 	htime.stop();
 	
-	cout << "Runtime: " << htime.elapsed_ms() << " ms\n";
+	cout << "\nRuntime, graph generation: " << htime.elapsed_ms() << " ms\n";
+	cout << "\nRandomly Generated Digraph\nVertices: " << rd.get_v() << ", Edges: " << rd.get_e() << ", Layers: " << layers << '\n';
 	
-	cout << "Hamiltionian Paths: \n";
+	htime.start();
+	hamiltonian_path rdpath = hamiltonian_path(rd);
+	cout << "\nNumber of Hamiltionian Paths: " << rdpath.get_num_paths() << " found out of "
+		<< rdpath.get_attempts() << '\n';
+	htime.stop();
 	
-	for (auto vi : hpath.get_paths())
-	{
-		cout << "Path:\n";
-		for (auto i : vi)
-			cout << i << ' ';
-		cout << '\n';
-	}
+	cout << "\nRuntime, find all Hamiltionian Paths: " << htime.elapsed_ms() << " ms\n";
+	
+	htime.start();
+	rdpath.run_shortest_path();
+	htime.stop();
+	
+	cout << "Runtime, find shortest: " << htime.elapsed_ms() << " ms\n";
+	
+	cout << "\nMin path: " << '\n';
+	for (auto i : rdpath.get_shortest_path())
+		cout << i << ' ';
+	
+	cout << '\n' << "Cost: " << rdpath.get_sp_cost() << '\n';
+	cout << '\n';
 	
 	return 0;
 }
+
+/*
+ cout << '\n';
+ for (int i = 0; i < nodes - 1; i++)
+ {
+	 for (int j = 1; j < nodes; j++)
+	 {
+	 	cout << "weight betwen node " << i << " and " << j << ": "
+ 		<< rd.get_weight("0-" + to_string(i), "0-"+to_string(i+1)) << '\n';
+	 }
+ }
+ */

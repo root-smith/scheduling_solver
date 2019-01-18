@@ -30,8 +30,8 @@ private:
 	
 public:
 	CGraph();
-	CGraph(std::vector<Vertex> v);
-	CGraph(const json& j);
+	CGraph(std::vector<std::string> v);
+	CGraph(std::vector<int> v);
 	
 	std::vector<std::vector<Edge>> adj;					//adjacency list for vertex v
 	std::vector<int> indegree;							//indegree[v] = indegree of vertex v
